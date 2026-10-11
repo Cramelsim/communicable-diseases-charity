@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Status from '../components/Status';
+import { Bar, PageHead, fmt } from '../components/ui';
 import { diseases } from '../features/diseases/diseasesSlice';
 
 export default function Diseases() {
@@ -14,9 +15,13 @@ export default function Diseases() {
     return () => clearTimeout(t);
   }, [dispatch, search]);
 
+  const max = items[0]?.total_cases || 0;
+
   return (
     <section>
-      <h1>Most prevalent communicable diseases</h1>
+      <PageHead title="Most prevalent communicable diseases">
+        Ranked by total reported cases across all affected areas. Select a disease to learn how it spreads and how to prevent it.
+      </PageHead>
       <input
         type="search"
         placeholder="Search diseases…"
@@ -24,20 +29,23 @@ export default function Diseases() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <Status status={status} error={error} empty={status === 'succeeded' && !items.length && 'No diseases found.'}>
-        <ul className="list">
+      <Status status={status} error={error} empty={status === 'succeeded' && !items.length && 'No diseases match your search.'}>
+        <div className="grid cards" style={{ marginTop: '1rem' }}>
           {items.map((d, i) => (
-            <li key={d.id} className="card">
-              <Link to={`/diseases/${d.id}`}>
-                <span className="rank">#{i + 1}</span> <strong>{d.name}</strong>
-              </Link>
-              <span className={`badge ${d.severity}`}>{d.severity}</span>
-              <p className="muted">
-                {d.total_cases?.toLocaleString()} reported cases · {d.areas_affected} areas
-              </p>
-            </li>
+            <Link key={d.id} to={`/diseases/${d.id}`} className={`card entity sev-${d.severity}`}>
+              <div className="entity-top">
+                <span className="rank">#{i + 1}</span>
+                <h3>{d.name}</h3>
+                <span className={`badge ${d.severity}`}>{d.severity}</span>
+              </div>
+              <Bar value={d.total_cases} max={max} tone="danger" />
+              <div className="entity-meta">
+                <span>{fmt(d.total_cases)} reported cases</span>
+                <span>{d.areas_affected} areas</span>
+              </div>
+            </Link>
           ))}
-        </ul>
+        </div>
       </Status>
     </section>
   );

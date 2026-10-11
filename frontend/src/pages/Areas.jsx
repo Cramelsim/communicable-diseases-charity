@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Status from '../components/Status';
+import { Bar, PageHead, fmt } from '../components/ui';
 import { areas } from '../features/areas/areasSlice';
 
 export default function Areas() {
@@ -14,23 +15,31 @@ export default function Areas() {
     return () => clearTimeout(t);
   }, [dispatch, search]);
 
+  const max = items[0]?.total_cases || 0;
+
   return (
     <section>
-      <h1>Most affected areas</h1>
+      <PageHead title="Most affected areas">
+        Communities ranked by total reported cases. Open an area to see its diseases, share ideas and donate.
+      </PageHead>
       <input type="search" placeholder="Search areas…" aria-label="Search areas" value={search} onChange={(e) => setSearch(e.target.value)} />
-      <Status status={status} error={error} empty={status === 'succeeded' && !items.length && 'No areas found.'}>
-        <ul className="list">
+      <Status status={status} error={error} empty={status === 'succeeded' && !items.length && 'No areas match your search.'}>
+        <div className="grid cards" style={{ marginTop: '1rem' }}>
           {items.map((a, i) => (
-            <li key={a.id} className="card">
-              <Link to={`/areas/${a.id}`}>
-                <span className="rank">#{i + 1}</span> <strong>{a.name}</strong>, {a.country}
-              </Link>
-              <p className="muted">
-                {a.total_cases?.toLocaleString()} cases · {a.diseases_count} diseases
-              </p>
-            </li>
+            <Link key={a.id} to={`/areas/${a.id}`} className="card entity">
+              <div className="entity-top">
+                <span className="rank">#{i + 1}</span>
+                <h3>{a.name}</h3>
+                <span className="badge">{a.country}</span>
+              </div>
+              <Bar value={a.total_cases} max={max} />
+              <div className="entity-meta">
+                <span>{fmt(a.total_cases)} cases</span>
+                <span>{a.diseases_count} diseases</span>
+              </div>
+            </Link>
           ))}
-        </ul>
+        </div>
       </Status>
     </section>
   );

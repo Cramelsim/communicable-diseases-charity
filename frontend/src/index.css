@@ -1,0 +1,70 @@
+:root {
+  --bg: #f6f8fa;
+  --card: #fff;
+  --text: #1c2833;
+  --muted: #5d6d7e;
+  --primary: #0b6e4f;
+  --primary-dark: #08553d;
+  --danger: #b71c1c;
+  --border: #d9e0e6;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+a { color: var(--primary); }
+h1 { font-size: 1.5rem; margin: 0.5rem 0 1rem; }
+h2 { font-size: 1.15rem; margin-top: 1.5rem; }
+
+/* Mobile first: stacked nav behind a toggle, widens at 768px */
+.header { background: var(--primary); color: #fff; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 0.6rem 1rem; position: sticky; top: 0; z-index: 1000; }
+.brand { color: #fff; font-weight: 700; font-size: 1.15rem; text-decoration: none; }
+.menu-toggle { background: none; border: 0; color: #fff; font-size: 1.6rem; min-width: 44px; min-height: 44px; cursor: pointer; }
+.nav { display: none; flex-direction: column; width: 100%; gap: 0.25rem; padding-top: 0.5rem; }
+.nav.open { display: flex; }
+.nav a, .link-btn { color: #fff; text-decoration: none; padding: 0.7rem 0.5rem; border-radius: 6px; text-align: left; }
+.nav a.active { background: var(--primary-dark); }
+.link-btn { background: none; border: 0; font: inherit; cursor: pointer; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 1rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; }
+.list { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: 0.75rem; }
+.muted { color: var(--muted); margin: 0.25rem 0 0; }
+.rank { color: var(--muted); font-weight: 600; }
+.row { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.form { display: grid; gap: 0.9rem; margin: 1rem 0; }
+label { display: grid; gap: 0.25rem; font-weight: 600; font-size: 0.95rem; }
+label.checkbox { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
+input, select, textarea { font: inherit; padding: 0.7rem; border: 1px solid var(--border); border-radius: 8px; width: 100%; min-height: 44px; }
+input[type='checkbox'] { width: auto; min-height: 0; }
+
+.btn { display: inline-block; background: var(--primary); color: #fff; border: 0; border-radius: 8px; padding: 0.75rem 1.1rem; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; min-height: 44px; }
+.btn:hover { background: var(--primary-dark); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn.secondary { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+.btn.danger { background: var(--danger); }
+.btn.small { padding: 0.4rem 0.8rem; min-height: 36px; }
+.actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+.row .actions { margin: 0; }
+
+.badge { display: inline-block; margin-left: 0.5rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: #e8eef2; font-size: 0.75rem; text-transform: capitalize; }
+.badge.moderate { background: #fff3cd; }
+.badge.high { background: #ffd8b5; }
+.badge.critical { background: #f5b7b1; }
+.error { color: var(--danger); }
+.success { background: #d4efdf; padding: 0.75rem 1rem; border-radius: 8px; }
+
+.presets { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.chip { border: 1px solid var(--primary); background: #fff; color: var(--primary); border-radius: 999px; padding: 0.5rem 1rem; min-height: 44px; font: inherit; cursor: pointer; }
+.chip.active { background: var(--primary); color: #fff; }
+
+.map { height: 55vh; min-height: 320px; border-radius: 10px; margin-top: 1rem; }
+.table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--card); }
+.table th, .table td { text-align: left; padding: 0.5rem; border-bottom: 1px solid var(--border); }
+
+@media (min-width: 768px) {
+  .menu-toggle { display: none; }
+  .nav { display: flex; flex-direction: row; width: auto; padding: 0; flex-wrap: wrap; align-items: center; }
+  .row { flex-direction: row; justify-content: space-between; align-items: center; }
+  .list.cols, .list { grid-template-columns: 1fr; }
+  .form { max-width: 560px; }
+}

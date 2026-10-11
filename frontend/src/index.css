@@ -205,3 +205,10 @@ input[type='search'] { max-width: 420px; background: var(--surface) url("data:im
   .grid.cards { grid-template-columns: repeat(3, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ---------- Reviews ---------- */
+.review-head { display: flex; align-items: center; gap: 0.7rem; }
+.review-head .badge { margin-left: auto; }
+.review .muted { margin: 0; font-size: 0.82rem; }
+.review p { margin: 0.7rem 0 0; }
+.avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-weight: 800; flex: none; }

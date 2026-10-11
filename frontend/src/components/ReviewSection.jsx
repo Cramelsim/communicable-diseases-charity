@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Empty } from './ui';
 import { reviews } from '../features/reviews/reviewsSlice';
 import { selectUser } from '../features/auth/authSlice';
 
@@ -31,7 +32,7 @@ export default function ReviewSection({ areaId, diseaseOptions }) {
     <section>
       <h2>How would you like to help?</h2>
       {user ? (
-        <form className="card form" onSubmit={onSubmit}>
+        <form className="card form narrow" onSubmit={onSubmit}>
           {error && <p role="alert" className="error">{error}</p>}
           <label>
             Disease
@@ -57,13 +58,19 @@ export default function ReviewSection({ areaId, diseaseOptions }) {
       )}
       <ul className="list">
         {items.map((r) => (
-          <li key={r.id} className="card">
-            <strong>{r.username}</strong> on {r.disease_name}
-            {r.rating && <span className="badge">priority {r.rating}/5</span>}
+          <li key={r.id} className="card review">
+            <div className="review-head">
+              <span className="avatar" aria-hidden="true">{r.username[0].toUpperCase()}</span>
+              <div>
+                <strong>{r.username}</strong>
+                <div className="muted">on {r.disease_name} · {new Date(r.created_at).toLocaleDateString()}</div>
+              </div>
+              {r.rating && <span className="badge">priority {r.rating}/5</span>}
+            </div>
             <p>{r.comment}</p>
           </li>
         ))}
-        {!items.length && <li className="muted">No ideas shared yet. Be the first!</li>}
+        {!items.length && <li><Empty icon="💡">No ideas shared yet. Be the first!</Empty></li>}
       </ul>
     </section>
   );

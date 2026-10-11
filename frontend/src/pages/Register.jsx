@@ -14,7 +14,7 @@ export default function Register() {
     dispatch(clearAuthError());
   }, [dispatch]);
   useEffect(() => {
-    if (user) navigate('/diseases', { replace: true });
+    if (user) navigate('/', { replace: true });
   }, [user, navigate]);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,8 +24,12 @@ export default function Register() {
   };
 
   return (
+    <div className="auth-wrap">
     <form className="card form" onSubmit={onSubmit}>
-      <h1>Create account</h1>
+      <div>
+        <h1>Join Health Aid</h1>
+        <p className="muted">Create a free account to share ideas and donate.</p>
+      </div>
       {error && <p role="alert" className="error">{error}</p>}
       <label>
         Username
@@ -42,9 +46,10 @@ export default function Register() {
       <button className="btn" disabled={status === 'loading'}>
         {status === 'loading' ? 'Creating…' : 'Sign up'}
       </button>
-      <p>
+      <p className="muted">
         Already registered? <Link to="/login">Log in</Link>
       </p>
     </form>
+    </div>
   );
 }

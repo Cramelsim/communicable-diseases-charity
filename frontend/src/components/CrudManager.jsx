@@ -38,11 +38,13 @@ export default function CrudManager({ title, noun, selector, thunks, fields, col
 
   return (
     <section>
-      <h1>{title}</h1>
-      <button className="btn" onClick={() => open(null)}>Add {noun}</button>
+      <div className="section-head">
+        <h1>{title}</h1>
+        <button className="btn" onClick={() => open(null)}>+ Add {noun}</button>
+      </div>
 
       {editing && (
-        <form className="card form" onSubmit={onSubmit} aria-label={`${editing === 'new' ? 'New' : 'Edit'} ${noun}`}>
+        <form className="card form narrow" onSubmit={onSubmit} aria-label={`${editing === 'new' ? 'New' : 'Edit'} ${noun}`}>
           <h2>{editing === 'new' ? `New ${noun}` : `Edit ${noun}`}</h2>
           {formError && <p role="alert" className="error">{formError}</p>}
           {fields.map((f) => (
@@ -74,7 +76,7 @@ export default function CrudManager({ title, noun, selector, thunks, fields, col
       )}
 
       <Status status={status} error={error} empty={status === 'succeeded' && !items.length && `No ${noun}s yet.`}>
-        <ul className="list">
+        <ul className="list" style={{ marginTop: '1.2rem' }}>
           {items.map((item) => (
             <li key={item.id} className="card row">
               <div>{columns(item)}</div>

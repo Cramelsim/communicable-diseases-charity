@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import DiseaseMap from '../components/DiseaseMap';
 import Status from '../components/Status';
+import { Bar, PageHead, StatTile, compact, fmt } from '../components/ui';
 import { diseases } from '../features/diseases/diseasesSlice';
 import { fetchMap } from '../features/map/mapSlice';
 
@@ -22,36 +23,57 @@ export default function MapPage() {
   }, [dispatch, disease, area]);
 
   const onFilter = (e) => setParams(e.target.value ? { disease: e.target.value } : {});
+  const totalCases = markers.reduce((n, m) => n + m.total_cases, 0);
+  const totalDeaths = markers.reduce((n, m) => n + m.total_deaths, 0);
+  const worst = [...markers].sort((a, b) => (b.cases_per_100k ?? 0) - (a.cases_per_100k ?? 0))[0];
 
   return (
     <section>
-      <h1>Disease impact map</h1>
-      <label>
-        Filter by disease
-        <select value={disease} onChange={onFilter}>
-          <option value="">All diseases</option>
-          {diseaseList.map((d) => (
-            <option key={d.id} value={d.id}>{d.name}</option>
-          ))}
-        </select>
-      </label>
-      <Status status={status} error={error} empty={status === 'succeeded' && !markers.length && 'No data for this selection.'}>
-        <DiseaseMap markers={markers} />
-        <p className="muted">Larger, darker circles show areas with more reported cases.</p>
-        <table className="table">
-          <thead>
-            <tr><th>Area</th><th>Cases</th><th>Per 100k</th></tr>
-          </thead>
-          <tbody>
-            {markers.map((m) => (
-              <tr key={m.area}>
-                <td>{m.name}</td>
-                <td>{m.total_cases.toLocaleString()}</td>
-                <td>{m.cases_per_100k ?? '–'}</td>
-              </tr>
+      <PageHead title="Disease impact map">
+        Circle size and colour show reported cases. Click a circle for the breakdown by disease.
+      </PageHead>
+      <div className="toolbar">
+        <label>
+          Filter by disease
+          <select value={disease} onChange={onFilter}>
+            <option value="">All diseases</option>
+            {diseaseList.map((d) => (
+              <option key={d.id} value={d.id}>{d.name}</option>
             ))}
-          </tbody>
-        </table>
+          </select>
+        </label>
+        {(disease || area) && <button className="btn secondary small" onClick={() => setParams({})}>Clear filters</button>}
+      </div>
+      <Status status={status} error={error} empty={status === 'succeeded' && !markers.length && 'No data for this selection.'} skeletons={1}>
+        <div className="stats">
+          <StatTile label="Areas shown" value={markers.length} />
+          <StatTile label="Cases" value={compact(totalCases)} tone="danger" />
+          <StatTile label="Deaths" value={fmt(totalDeaths)} />
+          <StatTile label="Highest burden" value={worst?.name.split(',')[0] ?? '–'} sub={worst?.cases_per_100k != null ? `${fmt(worst.cases_per_100k)} per 100k` : undefined} />
+        </div>
+        <DiseaseMap markers={markers} />
+        <div className="legend" aria-label="Legend">
+          <span><i style={{ background: '#f9a825' }} />Lower</span>
+          <span><i style={{ background: '#ef6c00' }} />Medium</span>
+          <span><i style={{ background: '#b71c1c' }} />Highest</span>
+        </div>
+        <div className="table-wrap">
+          <table className="table">
+            <thead>
+              <tr><th>Area</th><th>Cases</th><th>Share</th><th>Per 100k</th></tr>
+            </thead>
+            <tbody>
+              {markers.map((m) => (
+                <tr key={m.area}>
+                  <td><Link to={`/areas/${m.area}`}>{m.name}</Link></td>
+                  <td>{fmt(m.total_cases)}</td>
+                  <td style={{ minWidth: 110 }}><Bar value={m.total_cases} max={markers[0].total_cases} tone="danger" /></td>
+                  <td>{m.cases_per_100k != null ? fmt(m.cases_per_100k) : '–'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Status>
     </section>
   );

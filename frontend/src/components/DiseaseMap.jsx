@@ -7,7 +7,7 @@ const colour = (i) => (i > 0.66 ? '#b71c1c' : i > 0.33 ? '#ef6c00' : '#f9a825');
 export default function DiseaseMap({ markers }) {
   const center = markers.length ? [markers[0].latitude, markers[0].longitude] : [0, 20];
   return (
-    <MapContainer center={center} zoom={markers.length === 1 ? 6 : 3} className="map" scrollWheelZoom={false}>
+    <MapContainer center={center} zoom={markers.length === 1 ? 6 : 3} className="map" scrollWheelZoom={false} key={markers.map((m) => m.area).join('-')}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

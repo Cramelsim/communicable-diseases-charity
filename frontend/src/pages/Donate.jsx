@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { areas } from '../features/areas/areasSlice';
 import { diseases } from '../features/diseases/diseasesSlice';
+import { Empty, PageHead } from '../components/ui';
 import { donate, fetchMyDonations, resetDonation } from '../features/donations/donationsSlice';
 
 const PRESETS = [5, 10, 25, 50];
@@ -14,6 +15,8 @@ export default function Donate() {
   const diseaseList = useSelector((s) => s.diseases.items);
   const { mine, status, error, lastDonation } = useSelector((s) => s.donations);
   const [form, setForm] = useState({ area: params.get('area') || '', disease: '', amount: '10', message: '', anonymous: false });
+
+  const selectedArea = areaList.find((a) => String(a.id) === String(form.area));
 
   useEffect(() => {
     dispatch(resetDonation());
@@ -34,12 +37,15 @@ export default function Donate() {
 
   return (
     <section>
-      <h1>Donate to an affected area</h1>
+      <PageHead title="Donate to an affected area">
+        Choose where your gift goes. Every donation is recorded and shown in the area's totals.
+      </PageHead>
       {lastDonation && (
         <p role="status" className="success">
           Thank you! Your donation of {lastDonation.amount} {lastDonation.currency} to {lastDonation.area_name} was recorded.
         </p>
       )}
+      <div className="split">
       <form className="card form" onSubmit={onSubmit}>
         {error && <p role="alert" className="error">{error}</p>}
         <label>
@@ -69,7 +75,10 @@ export default function Donate() {
         </div>
         <label>
           Amount (USD)
-          <input name="amount" type="number" min="1" step="0.01" value={form.amount} onChange={onChange} required />
+          <div className="amount-input">
+            <span>$</span>
+            <input name="amount" type="number" min="1" step="0.01" value={form.amount} onChange={onChange} required />
+          </div>
         </label>
         <label>
           Message (optional)
@@ -80,14 +89,26 @@ export default function Donate() {
         </label>
         <button className="btn" disabled={status === 'loading'}>{status === 'loading' ? 'Processing…' : 'Donate'}</button>
       </form>
+      <aside className="card donate-aside">
+        <h3>Your impact</h3>
+        <div className="big-amount">${Number(form.amount || 0).toLocaleString()}</div>
+        <p className="muted">{selectedArea ? `going to ${selectedArea.name}, ${selectedArea.country}` : 'Select an area to direct your gift.'}</p>
+        <ul className="impact">
+          <li>🦟 $10 can help provide insecticide-treated nets for a family</li>
+          <li>💧 $25 can fund safe water supplies and oral rehydration kits</li>
+          <li>💉 $50 can help vaccinate a community clinic day</li>
+        </ul>
+      </aside>
+      </div>
       <h2>Your donations</h2>
       <ul className="list">
         {mine.map((d) => (
-          <li key={d.id} className="card">
-            {d.amount} {d.currency} → {d.area_name} <span className="badge">{d.status}</span>
+          <li key={d.id} className="card row">
+            <span><strong>${d.amount}</strong> → {d.area_name}{d.disease_name ? ` · ${d.disease_name}` : ''}</span>
+            <span className="badge">{d.status}</span>
           </li>
         ))}
-        {!mine.length && <li className="muted">No donations yet.</li>}
+        {!mine.length && <li><Empty icon="💚">No donations yet — your first gift will show up here.</Empty></li>}
       </ul>
     </section>
   );

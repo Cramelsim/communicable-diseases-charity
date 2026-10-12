@@ -25,7 +25,7 @@ export default function Register() {
 
   return (
     <div className="auth-wrap">
-    <form className="card form" onSubmit={onSubmit}>
+    <form className="panel form" onSubmit={onSubmit}>
       <div>
         <h1>Join Health Aid</h1>
         <p className="muted">Create a free account to share ideas and donate.</p>
@@ -44,7 +44,7 @@ export default function Register() {
         <input name="password" type="password" value={form.password} onChange={onChange} required minLength={8} autoComplete="new-password" />
       </label>
       <button className="btn" disabled={status === 'loading'}>
-        {status === 'loading' ? 'Creating…' : 'Sign up'}
+        {status === 'loading' ? 'Creating…' : 'Create account'}
       </button>
       <p className="muted">
         Already registered? <Link to="/login">Log in</Link>

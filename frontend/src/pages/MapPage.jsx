@@ -30,7 +30,7 @@ export default function MapPage() {
   return (
     <section>
       <PageHead title="Disease impact map">
-        Circle size and colour show reported cases. Click a circle for the breakdown by disease.
+        Circle size and colour show reported cases. Select a circle for the breakdown by disease.
       </PageHead>
       <div className="toolbar">
         <label>
@@ -49,26 +49,26 @@ export default function MapPage() {
           <StatTile label="Areas shown" value={markers.length} />
           <StatTile label="Cases" value={compact(totalCases)} tone="danger" />
           <StatTile label="Deaths" value={fmt(totalDeaths)} />
-          <StatTile label="Highest burden" value={worst?.name.split(',')[0] ?? '–'} sub={worst?.cases_per_100k != null ? `${fmt(worst.cases_per_100k)} per 100k` : undefined} />
+          <StatTile label="Highest burden" value={worst?.name.split(',')[0] ?? 'None'} sub={worst?.cases_per_100k != null ? `${fmt(worst.cases_per_100k)} per 100k` : undefined} />
         </div>
         <DiseaseMap markers={markers} />
         <div className="legend" aria-label="Legend">
-          <span><i style={{ background: '#f9a825' }} />Lower</span>
-          <span><i style={{ background: '#ef6c00' }} />Medium</span>
-          <span><i style={{ background: '#b71c1c' }} />Highest</span>
+          <span><i style={{ background: '#d9a441' }} />Lower share of highest</span>
+          <span><i style={{ background: '#c2562b' }} />Medium</span>
+          <span><i style={{ background: '#8f2616' }} />Highest</span>
         </div>
         <div className="table-wrap">
           <table className="table">
             <thead>
-              <tr><th>Area</th><th>Cases</th><th>Share</th><th>Per 100k</th></tr>
+              <tr><th>Area</th><th className="num">Cases</th><th>Share of highest</th><th className="num">Per 100k</th></tr>
             </thead>
             <tbody>
               {markers.map((m) => (
                 <tr key={m.area}>
                   <td><Link to={`/areas/${m.area}`}>{m.name}</Link></td>
-                  <td>{fmt(m.total_cases)}</td>
+                  <td className="num">{fmt(m.total_cases)}</td>
                   <td style={{ minWidth: 110 }}><Bar value={m.total_cases} max={markers[0].total_cases} tone="danger" /></td>
-                  <td>{m.cases_per_100k != null ? fmt(m.cases_per_100k) : '–'}</td>
+                  <td className="num">{m.cases_per_100k != null ? fmt(m.cases_per_100k) : 'None'}</td>
                 </tr>
               ))}
             </tbody>

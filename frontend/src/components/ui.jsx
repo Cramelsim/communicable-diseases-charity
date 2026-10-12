@@ -42,10 +42,9 @@ export function PageHead({ title, children }) {
   );
 }
 
-export function Empty({ icon = '🔍', children }) {
+export function Empty({ children }) {
   return (
     <div className="empty">
-      <div className="empty-icon">{icon}</div>
       <p>{children}</p>
     </div>
   );

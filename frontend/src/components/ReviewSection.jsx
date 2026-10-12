@@ -32,7 +32,7 @@ export default function ReviewSection({ areaId, diseaseOptions }) {
     <section>
       <h2>How would you like to help?</h2>
       {user ? (
-        <form className="card form narrow" onSubmit={onSubmit}>
+        <form className="panel form narrow" onSubmit={onSubmit}>
           {error && <p role="alert" className="error">{error}</p>}
           <label>
             Disease
@@ -48,29 +48,28 @@ export default function ReviewSection({ areaId, diseaseOptions }) {
             <textarea name="comment" value={form.comment} onChange={onChange} required rows={3} />
           </label>
           <label>
-            Priority (1–5, optional)
+            Priority, 1 to 5 (optional)
             <input name="rating" type="number" min="1" max="5" value={form.rating} onChange={onChange} />
           </label>
-          <button className="btn" disabled={submitting}>Share</button>
+          <button className="btn" disabled={submitting}>Share idea</button>
         </form>
       ) : (
         <p><Link to="/login">Log in</Link> to share how you would like to help.</p>
       )}
       <ul className="list">
         {items.map((r) => (
-          <li key={r.id} className="card review">
-            <div className="review-head">
-              <span className="avatar" aria-hidden="true">{r.username[0].toUpperCase()}</span>
+          <li key={r.id} className="review">
+            <div className="row">
               <div>
                 <strong>{r.username}</strong>
-                <div className="muted">on {r.disease_name} · {new Date(r.created_at).toLocaleDateString()}</div>
+                <div className="muted">on {r.disease_name}, {new Date(r.created_at).toLocaleDateString()}</div>
               </div>
-              {r.rating && <span className="badge">priority {r.rating}/5</span>}
+              {r.rating && <span className="badge">Priority {r.rating} of 5</span>}
             </div>
             <p>{r.comment}</p>
           </li>
         ))}
-        {!items.length && <li><Empty icon="💡">No ideas shared yet. Be the first!</Empty></li>}
+        {!items.length && <li><Empty>No ideas shared yet. Log in and share how you would help this area.</Empty></li>}
       </ul>
     </section>
   );

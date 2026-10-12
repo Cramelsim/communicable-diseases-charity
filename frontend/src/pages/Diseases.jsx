@@ -24,28 +24,32 @@ export default function Diseases() {
       </PageHead>
       <input
         type="search"
-        placeholder="Search diseases…"
+        placeholder="Search diseases"
         aria-label="Search diseases"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
       <Status status={status} error={error} empty={status === 'succeeded' && !items.length && 'No diseases match your search.'}>
-        <div className="grid cards" style={{ marginTop: '1rem' }}>
+        <ol className="ledger">
           {items.map((d, i) => (
-            <Link key={d.id} to={`/diseases/${d.id}`} className={`card entity sev-${d.severity}`}>
-              <div className="entity-top">
+            <li key={d.id}>
+              <Link to={`/diseases/${d.id}`} className={`ledger-row sev-${d.severity}`}>
                 <span className="rank">#{i + 1}</span>
-                <h3>{d.name}</h3>
-                <span className={`badge ${d.severity}`}>{d.severity}</span>
-              </div>
-              <Bar value={d.total_cases} max={max} tone="danger" />
-              <div className="entity-meta">
-                <span>{fmt(d.total_cases)} reported cases</span>
-                <span>{d.areas_affected} areas</span>
-              </div>
-            </Link>
+                <span className="ledger-main">
+                  <span className="ledger-title">
+                    <h3>{d.name}</h3>
+                    <span className="sev">{d.severity} severity</span>
+                  </span>
+                  <Bar value={d.total_cases} max={max} tone="danger" />
+                  <span className="ledger-meta">
+                    <span>{fmt(d.total_cases)} reported cases</span>
+                    <span>{d.areas_affected} areas</span>
+                  </span>
+                </span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
       </Status>
     </section>
   );

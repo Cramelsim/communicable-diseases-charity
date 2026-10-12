@@ -42,11 +42,11 @@ export default function Donate() {
       </PageHead>
       {lastDonation && (
         <p role="status" className="success">
-          Thank you! Your donation of {lastDonation.amount} {lastDonation.currency} to {lastDonation.area_name} was recorded.
+          Your donation of {lastDonation.amount} {lastDonation.currency} to {lastDonation.area_name} was recorded. Thank you.
         </p>
       )}
       <div className="split">
-      <form className="card form" onSubmit={onSubmit}>
+      <form className="panel form" onSubmit={onSubmit}>
         {error && <p role="alert" className="error">{error}</p>}
         <label>
           Area
@@ -66,7 +66,7 @@ export default function Donate() {
             ))}
           </select>
         </label>
-        <div className="presets" role="group" aria-label="Preset amounts">
+        <div className="chips" role="group" aria-label="Preset amounts">
           {PRESETS.map((p) => (
             <button type="button" key={p} className={`chip ${form.amount === String(p) ? 'active' : ''}`} onClick={() => setForm({ ...form, amount: String(p) })}>
               ${p}
@@ -87,28 +87,28 @@ export default function Donate() {
         <label className="checkbox">
           <input name="anonymous" type="checkbox" checked={form.anonymous} onChange={onChange} /> Donate anonymously
         </label>
-        <button className="btn" disabled={status === 'loading'}>{status === 'loading' ? 'Processing…' : 'Donate'}</button>
+        <button className="btn" disabled={status === 'loading'}>{status === 'loading' ? 'Processing' : 'Donate'}</button>
       </form>
-      <aside className="card donate-aside">
-        <h3>Your impact</h3>
+      <aside className="aside">
+        <h3>Where your gift goes</h3>
         <div className="big-amount">${Number(form.amount || 0).toLocaleString()}</div>
         <p className="muted">{selectedArea ? `going to ${selectedArea.name}, ${selectedArea.country}` : 'Select an area to direct your gift.'}</p>
         <ul className="impact">
-          <li>🦟 $10 can help provide insecticide-treated nets for a family</li>
-          <li>💧 $25 can fund safe water supplies and oral rehydration kits</li>
-          <li>💉 $50 can help vaccinate a community clinic day</li>
+          <li>$10 can help provide insecticide-treated nets for a family</li>
+          <li>$25 can fund safe water supplies and oral rehydration kits</li>
+          <li>$50 can help vaccinate a community clinic day</li>
         </ul>
       </aside>
       </div>
       <h2>Your donations</h2>
       <ul className="list">
         {mine.map((d) => (
-          <li key={d.id} className="card row">
-            <span><strong>${d.amount}</strong> → {d.area_name}{d.disease_name ? ` · ${d.disease_name}` : ''}</span>
+          <li key={d.id} className="row">
+            <span><strong>${d.amount}</strong> to {d.area_name}{d.disease_name ? `, for ${d.disease_name}` : ''}</span>
             <span className="badge">{d.status}</span>
           </li>
         ))}
-        {!mine.length && <li><Empty icon="💚">No donations yet — your first gift will show up here.</Empty></li>}
+        {!mine.length && <li><Empty>You have not donated yet. Choose an area above and your gift will be listed here.</Empty></li>}
       </ul>
     </section>
   );

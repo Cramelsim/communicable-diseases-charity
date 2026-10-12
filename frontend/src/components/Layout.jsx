@@ -22,10 +22,10 @@ export default function Layout() {
       <header className="header">
         <div className="header-inner">
           <Link to="/" className="brand" onClick={close}>
-            <span className="brand-mark" aria-hidden="true">🩺</span> Health Aid
+            Health Aid
           </Link>
-          <button className="menu-toggle" aria-expanded={open} aria-label="Toggle menu" onClick={() => setOpen(!open)}>
-            {open ? '✕' : '☰'}
+          <button className="menu-toggle" aria-expanded={open} onClick={() => setOpen(!open)}>
+            {open ? 'Close' : 'Menu'}
           </button>
           <nav className={`nav ${open ? 'open' : ''}`} onClick={close}>
             <NavLink to="/diseases">Diseases</NavLink>
@@ -44,13 +44,13 @@ export default function Layout() {
               <>
                 <NavLink to="/donate" className="nav-cta">Donate</NavLink>
                 <button className="link-btn" onClick={handleLogout}>
-                  Log out ({user.username})
+                  Log out, {user.username}
                 </button>
               </>
             ) : (
               <>
                 <NavLink to="/login">Log in</NavLink>
-                <NavLink to="/register" className="nav-cta">Sign up</NavLink>
+                <NavLink to="/register" className="nav-cta">Create account</NavLink>
               </>
             )}
           </nav>
@@ -60,7 +60,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <footer className="footer">
-        Health Aid · Preventing communicable diseases through data, community and giving.
+        Health Aid shows reported cases of communicable diseases and routes donations to the areas affected.
       </footer>
     </>
   );

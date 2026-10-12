@@ -22,24 +22,28 @@ export default function Areas() {
       <PageHead title="Most affected areas">
         Communities ranked by total reported cases. Open an area to see its diseases, share ideas and donate.
       </PageHead>
-      <input type="search" placeholder="Search areas…" aria-label="Search areas" value={search} onChange={(e) => setSearch(e.target.value)} />
+      <input type="search" placeholder="Search areas" aria-label="Search areas" value={search} onChange={(e) => setSearch(e.target.value)} />
       <Status status={status} error={error} empty={status === 'succeeded' && !items.length && 'No areas match your search.'}>
-        <div className="grid cards" style={{ marginTop: '1rem' }}>
+        <ol className="ledger">
           {items.map((a, i) => (
-            <Link key={a.id} to={`/areas/${a.id}`} className="card entity">
-              <div className="entity-top">
+            <li key={a.id}>
+              <Link to={`/areas/${a.id}`} className="ledger-row">
                 <span className="rank">#{i + 1}</span>
-                <h3>{a.name}</h3>
-                <span className="badge">{a.country}</span>
-              </div>
-              <Bar value={a.total_cases} max={max} />
-              <div className="entity-meta">
-                <span>{fmt(a.total_cases)} cases</span>
-                <span>{a.diseases_count} diseases</span>
-              </div>
-            </Link>
+                <span className="ledger-main">
+                  <span className="ledger-title">
+                    <h3>{a.name}</h3>
+                    <span className="badge">{a.country}</span>
+                  </span>
+                  <Bar value={a.total_cases} max={max} />
+                  <span className="ledger-meta">
+                    <span>{fmt(a.total_cases)} cases</span>
+                    <span>{a.diseases_count} diseases</span>
+                  </span>
+                </span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
       </Status>
     </section>
   );

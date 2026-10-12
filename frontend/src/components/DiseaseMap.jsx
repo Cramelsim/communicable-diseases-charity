@@ -1,7 +1,7 @@
 import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet';
 import { Link } from 'react-router-dom';
 
-const colour = (i) => (i > 0.66 ? '#b71c1c' : i > 0.33 ? '#ef6c00' : '#f9a825');
+const colour = (i) => (i > 0.66 ? '#8f2616' : i > 0.33 ? '#c2562b' : '#d9a441');
 
 /** Marker size and colour scale with each area's share of the highest case count. */
 export default function DiseaseMap({ markers }) {
@@ -22,7 +22,7 @@ export default function DiseaseMap({ markers }) {
           <Popup>
             <strong><Link to={`/areas/${m.area}`}>{m.name}</Link></strong>
             <br />
-            {m.total_cases.toLocaleString()} cases · {m.total_deaths.toLocaleString()} deaths
+            {m.total_cases.toLocaleString()} cases, {m.total_deaths.toLocaleString()} deaths
             {m.cases_per_100k != null && <><br />{m.cases_per_100k} cases per 100k people</>}
             <ul>
               {m.diseases.map((d) => (

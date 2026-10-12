@@ -20,5 +20,5 @@ test('shows headline figures and top diseases', async () => {
   expect(await screen.findByRole('link', { name: 'Malaria' })).toHaveAttribute('href', '/diseases/1');
   expect(screen.getByText('4K')).toBeInTheDocument(); // total cases, compact
   expect(await screen.findByText('$125')).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'Join the effort' })).toHaveAttribute('href', '/register');
+  expect(screen.getByRole('link', { name: 'Create account' })).toHaveAttribute('href', '/register');
 });

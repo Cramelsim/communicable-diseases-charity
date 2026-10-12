@@ -22,13 +22,13 @@ export default function AreaDetail() {
         const deaths = diseases.reduce((n, d) => n + d.deaths, 0);
         return (
           <article>
-            <Link to="/areas" className="breadcrumb">← All areas</Link>
+            <Link to="/areas" className="back">All areas</Link>
             <div className="banner">
-              <span className="badge">{a.country}</span>
+              <span className="sev">{a.country}</span>
               <h1>{a.name}</h1>
               {a.description && <p>{a.description}</p>}
               <div className="actions">
-                <Link className="btn accent" to={`/donate?area=${a.id}`}>Donate to {a.name}</Link>
+                <Link className="btn" to={`/donate?area=${a.id}`}>Donate to {a.name}</Link>
                 <Link className="btn secondary" to={`/map?area=${a.id}`}>View on map</Link>
               </div>
             </div>
@@ -41,14 +41,14 @@ export default function AreaDetail() {
             </div>
 
             <h2>Diseases in this area</h2>
-            <div className="card">
+            <div className="ruled">
               {diseases.map((d) => (
                 <BarRow
                   key={d.disease}
                   label={<Link to={`/diseases/${d.disease}`}>{d.disease_name}</Link>}
                   value={d.cases}
                   max={diseases[0].cases}
-                  valueLabel={`${fmt(d.cases)} cases · ${fmt(d.deaths)} deaths`}
+                  valueLabel={`${fmt(d.cases)} cases, ${fmt(d.deaths)} deaths`}
                   tone="danger"
                 />
               ))}

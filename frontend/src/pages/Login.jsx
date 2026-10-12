@@ -26,9 +26,9 @@ export default function Login() {
 
   return (
     <div className="auth-wrap">
-      <form className="card form" onSubmit={onSubmit}>
+      <form className="panel form" onSubmit={onSubmit}>
         <div>
-          <h1>Welcome back</h1>
+          <h1>Log in</h1>
           <p className="muted">Log in to share ideas and donate.</p>
         </div>
         {error && <p role="alert" className="error">{error}</p>}
